@@ -1,5 +1,5 @@
 package com.stackroute;
-
+import com.stackroute.domain.Paragraph;
 import java.util.*;
 import java.lang.*;
 import java.io.*;
@@ -28,6 +28,7 @@ public class ParagraphTokenizer
                 "And more text. And more text. And more text. And more text. And more\n" +
                 "text. And more text. And more text. Even more. Continued on page 2 ... \n";
 
+        Paragraph paraObj = new Paragraph();
         String patternStr = "[.?!][/\\s/g]?\\n+";
         Pattern pattern = Pattern.compile(patternStr);
         Matcher matcher = pattern.matcher(text);
@@ -39,19 +40,19 @@ public class ParagraphTokenizer
             i++;
         }
         int cnt=0;
-        int id=1;
+        paraObj.setParagraphId(1);
+        int id= paraObj.getParagraphId();
         JSONObject obj = new JSONObject();
         while (cnt<para.length) {
             obj.put("paragraphId",id);
-//            System.out.println("paraId: "+id);
-            id++;
-            obj.put("paragraphText",para[cnt]);
-//            System.out.println(para[cnt]);
+            paraObj.setParagraphId(id++);
+            paraObj.setParagraphText(para[cnt]);
+            obj.put("paragraphText",paraObj.getParagraphText());
             cnt++;
 
             StringWriter out = new StringWriter();
             obj.writeJSONString(out);
-//
+
 //            String jsonText = out.toString();
 //            System.out.print(jsonText);
             System.out.println(obj);
